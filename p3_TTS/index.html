@@ -6,7 +6,7 @@
     <title>Text To Speech</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body class="stylePage">
     <div class="container">
       <h1>Text To Speech</h1>
       <p>
@@ -18,8 +18,9 @@
         Simply enter your text in the input box below and click the "Speak"
         button to hear it read aloud.
       </p>
-      <textarea class="textarea" placeholder="Kopeeri konspekt siia"></textarea
-      ><br />
+      <textarea id="textarea" placeholder="Kopeeri jutt siia"></textarea>
+      <br />
+      <br />
       <button onclick="speakText()">Speak</button>
     </div>
     <script src="func.js"></script>
