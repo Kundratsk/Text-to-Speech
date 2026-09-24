@@ -4,21 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text To Speech</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Text To Speech</h1>
-    <p>
-      Welcome to the Text To Speech application. This tool allows you to convert
-      written text into spoken words.
-    </p>
-    <h2>How to Use</h2>
-    <p>
-      Simply enter your text in the input box below and click the "Speak" button
-      to hear it read aloud.
-    </p>
-    <textarea placeholder="Kopeeri konspekt siia"></textarea><br />
-    <button onclick="speakText()">Speak</button>
-
-    <script></script>
+    <div class="container">
+      <h1>Text To Speech</h1>
+      <p>
+        Welcome to the Text To Speech application. This tool allows you to
+        convert written text into spoken words.
+      </p>
+      <h2>How to Use</h2>
+      <p>
+        Simply enter your text in the input box below and click the "Speak"
+        button to hear it read aloud.
+      </p>
+      <textarea class="textarea" placeholder="Kopeeri konspekt siia"></textarea
+      ><br />
+      <button onclick="speakText()">Speak</button>
+    </div>
+    <script src="func.js"></script>
   </body>
 </html>
