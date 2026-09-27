@@ -1,44 +1,60 @@
-// Teeme muutuja funktsioonist väljaspool, et see säiliks vajutuste vahel
 let currentAudio = null;
 
 async function speakText() {
-  const text = document.getElementById("textarea").value;
+  const textarea = document.getElementById("textarea");
+  let text = textarea.value;
 
   if (text.trim() === "") return;
 
-  // Kui eelmine heli veel mängib, peatame selle
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0; // Kerib heli algusesse tagasi
+  // Kursori asukoha kontrollimine
+  const startPos = textarea.selectionStart;
+  const endPos = textarea.selectionEnd;
+
+  if (startPos !== endPos) {
+    text = text.substring(startPos, endPos);
+  } else if (startPos > 0) {
+    text = text.substring(startPos);
   }
 
+  if (text.trim() === "") return;
+
+  // Peatame eelmise heli, kui see juba mängib
+  stopText();
+
   try {
-    // Saadame teksti TartuNLP tehisintellekti serverisse
-    const response = await fetch("https://api.tartunlp.ai/text-to-speech/v2", {
+    // Teeme päringu omaenda turvalisse vaheserverisse
+    const response = await fetch("http://localhost:3000/tts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         text: text,
-        speaker: "Kalev", // Vali sobiv hääl (nt "mari", "kalev" vms)
-        speed: 1.0,
+        speaker: "mari",
+        speed: 0.95,
       }),
     });
 
     if (!response.ok) {
-      throw new Error("Võrguvigane vastus serverist.");
+      throw new Error(`Serveri viga: ${response.status}`);
     }
 
-    // Saame vastuseks helifaili (blob)
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
 
-    // Salvestame uue heli globaalsesse muutujasse ja mängime maha
     currentAudio = new Audio(audioUrl);
     currentAudio.play();
   } catch (error) {
     console.error("Kõnesünteesi viga:", error);
-    alert("Hääle genereerimine ebaõnnestus.");
+    alert(
+      `Hääle genereerimine ebaõnnestus. Kontrolli, kas node server.js töötab!`,
+    );
+  }
+}
+
+function stopText() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
   }
 }
